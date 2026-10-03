@@ -34,10 +34,8 @@ body {
 /* ── 頁頭 ── */
 header { text-align: center; margin-bottom: 30px; }
 .logo {
-    width: 76px; height: 76px; border-radius: 22px; margin: 0 auto 16px;
-    display: flex; align-items: center; justify-content: center;
-    background: var(--sun-grad); box-shadow: var(--shadow-lg);
-    font-size: 34px;
+    width: 88px; height: 88px; border-radius: 22px; margin: 0 auto 16px;
+    display: block; object-fit: contain;
 }
 h1 { font-size: 1.85rem; font-weight: 800; letter-spacing: -.02em; }
 .sub { margin-top: 10px; color: var(--text-secondary); font-size: 1rem; line-height: 1.65; }
@@ -142,17 +140,16 @@ footer a { color: var(--accent-color); text-decoration: none; }
 <body>
 <div class="wrap">
     <header>
-        <div class="logo">🎋</div>
+        <img class="logo" src="assets/logo-app.png" alt="SilverChat 愛耆易">
         <h1>領取試用帳號</h1>
         <p class="sub">
-            揀返你想登入嘅身份，我哋會即刻分配一個專屬試用帳號畀你。<br>
-            每個帳號只會派一次，唔會同其他人重複。
+            揀返你想登入嘅身份，我哋會即刻分配一個專屬試用帳號畀你。
         </p>
     </header>
 
     <!-- 步驟 1：揀身份 -->
     <section class="card" id="step-role">
-        <div class="card-title">① 你想用邊個身份登入？</div>
+        <div class="card-title">你想用邊個身份登入？</div>
         <p class="card-hint">撳一下揀定，撳「拎帳號」就會分配。</p>
         <div class="roles">
             <button type="button" class="role-btn" data-role="elderly" aria-pressed="false">
@@ -187,7 +184,7 @@ footer a { color: var(--accent-color); text-decoration: none; }
 
     <!-- 步驟 2：結果 -->
     <section class="card hidden" id="step-result">
-        <div class="card-title">② 你嘅試用帳號</div>
+        <div class="card-title">你嘅試用帳號</div>
         <p class="card-hint">撳右邊掣複製，返 App 登入撳貼上就得。</p>
 
         <div class="field">

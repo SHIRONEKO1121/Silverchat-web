@@ -35,7 +35,10 @@
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
-    html { scroll-behavior: smooth; }
+    html { scroll-behavior: smooth; scroll-padding-top: 84px; }
+
+    /* sticky nav 會遮住錨點標題，所有 section 落地時預留導覽列高度 */
+    section[id], header[id] { scroll-margin-top: 84px; }
 
     body {
         font-family: -apple-system, BlinkMacSystemFont, "PingFang TC", "PingFang SC",
@@ -412,6 +415,44 @@
     }
     .dl-phone img { width: 128px; height: 128px; border-radius: 30px; }
 
+    /* ---------- 領取試用帳號區 ---------- */
+    .trial { padding-bottom: 88px; }
+    .trial-card {
+        background: var(--card-bg); border-radius: 32px; padding: 56px 48px;
+        box-shadow: var(--shadow-lg); border: 1px solid var(--card-line);
+        display: grid; grid-template-columns: 1.15fr .85fr; gap: 48px; align-items: center;
+        position: relative; overflow: hidden;
+    }
+    .trial-card::before {
+        content: ""; position: absolute; bottom: -150px; left: -110px;
+        width: 400px; height: 400px; pointer-events: none;
+        background: radial-gradient(closest-side, rgba(246, 183, 60, .18), transparent 70%);
+    }
+    .trial-card h2 { font-size: clamp(26px, 3.2vw, 36px); font-weight: 800; letter-spacing: -.02em; line-height: 1.3; }
+    .trial-card .sub { margin-top: 12px; font-size: 16px; color: var(--text-secondary); font-weight: 600; max-width: 440px; }
+
+    /* 剩餘數量：三個身份各一格 */
+    .trial-stock { display: flex; gap: 12px; margin-top: 22px; flex-wrap: wrap; }
+    .trial-stock-item {
+        flex: 1; min-width: 104px; text-align: center; padding: 14px 10px;
+        background: #FFF9EC; border: 1px solid rgba(160, 120, 40, .12); border-radius: 16px;
+    }
+    .trial-stock-n {
+        font-size: 1.5rem; font-weight: 900; color: var(--sun-deep); line-height: 1.2;
+    }
+    .trial-stock-l { font-size: .8rem; color: var(--text-secondary); font-weight: 700; margin-top: 2px; }
+
+    .trial-actions { margin-top: 26px; display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+    .trial-note { font-size: 13px; color: var(--text-muted); font-weight: 600; line-height: 1.7; }
+
+    .trial-visual {
+        justify-self: center; width: 190px; height: 190px; border-radius: 44px;
+        background: var(--sun-grad); display: flex; align-items: center; justify-content: center;
+        box-shadow: 0 24px 48px -16px rgba(217, 142, 31, .55);
+        transform: rotate(-4deg); position: relative; z-index: 1;
+    }
+    .trial-visual img { width: 128px; height: 128px; border-radius: 30px; }
+
     /* ---------- 頁尾 ---------- */
     footer {
         border-top: 1px solid var(--card-line); padding: 40px 0 48px;
@@ -438,7 +479,14 @@
         .dl-card { grid-template-columns: 1fr; text-align: center; padding: 48px 28px; }
         .dl-card .sub { margin-left: auto; margin-right: auto; }
         .dl-actions, .dl-status-wrap { justify-content: center; }
-        .nav-links a:not(.nav-cta) { display: none; }
+        /* 手機：導覽列淨留「領取試用帳號」同「下載 App」，其餘靜態連結收起。
+           之前係 a:not(.nav-cta) 全收，搞到手機入唔到派號頁。 */
+        .nav-links a:not(.nav-cta):not(.nav-trial) { display: none; }
+        .nav-links { gap: 14px; }
+        .trial-card { grid-template-columns: 1fr; text-align: center; padding: 48px 28px; }
+        .trial-card .sub { margin-left: auto; margin-right: auto; }
+        .trial-actions, .trial-stock { justify-content: center; }
+        .trial-actions .trial-note { text-align: center; }
     }
     @media (prefers-reduced-motion: reduce) {
         * { animation: none !important; transition: none !important; scroll-behavior: auto; }
@@ -459,7 +507,7 @@
             <a href="#time">時光碎片</a>
             <a href="#roles">三端協作</a>
             <a href="#senior">適老設計</a>
-            <a href="trial.html">領取試用帳號</a>
+            <a class="nav-trial" href="#trial">領取試用帳號</a>
             <a class="nav-cta" href="#download">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
                 下載 App
@@ -768,6 +816,33 @@
     </div>
 </section>
 
+<!-- ===================== 領取試用帳號 ===================== -->
+<section class="trial" id="trial">
+    <div class="wrap">
+        <div class="trial-card">
+            <div>
+                <h2>領取試用帳號</h2>
+                <p class="sub">未安裝 App 都可以先拎個帳號。揀返你想登入嘅身份（長者／家人／社工），系統會即刻分配一個專屬帳號同密碼畀你。</p>
+                <div class="trial-stock" id="trial-stock">
+                    <div class="trial-stock-item"><div class="trial-stock-n">—</div><div class="trial-stock-l">長者剩餘</div></div>
+                    <div class="trial-stock-item"><div class="trial-stock-n">—</div><div class="trial-stock-l">家人剩餘</div></div>
+                    <div class="trial-stock-item"><div class="trial-stock-n">—</div><div class="trial-stock-l">社工剩餘</div></div>
+                </div>
+                <div class="trial-actions">
+                    <a class="btn-primary" href="trial.html">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                        立即領取帳號
+                    </a>
+                    <span class="trial-note">每位訪客 3 日內只可領取 1 個<br>帳號一經派出不會重複發放</span>
+                </div>
+            </div>
+            <div class="trial-visual">
+                <img src="assets/logo-app.png" alt="SilverChat 愛耆易 App 圖示">
+            </div>
+        </div>
+    </div>
+</section>
+
 <!-- ===================== 下載 ===================== -->
 <section class="download" id="download">
     <div class="wrap">
@@ -804,6 +879,38 @@
         <p>© 2026 SilverChat 愛耆易 ・ 用 AI 溫暖每一個銀髮日常</p>
     </div>
 </footer>
+
+<script>
+// 領取試用帳號卡片：由後端拉真實剩餘數量。
+// 拉唔到就保留佔位「—」，唔好顯示假數字誤導人。
+(function () {
+    var API = 'https://silverchat-server-316201-12-1453732322.sh.run.tcloudbase.com/api/trial';
+    var box = document.getElementById('trial-stock');
+    if (!box) return;
+
+    fetch(API + '/stats')
+        .then(function (r) { return r.json(); })
+        .then(function (j) {
+            if (!j || !j.success || !j.stats) return;
+            var order = [
+                ['elderly', '長者剩餘'],
+                ['family', '家人剩餘'],
+                ['social_worker', '社工剩餘']
+            ];
+            var html = '';
+            order.forEach(function (pair) {
+                var s = j.stats[pair[0]];
+                if (!s) return;
+                html += '<div class="trial-stock-item">' +
+                        '<div class="trial-stock-n">' + s.left + '</div>' +
+                        '<div class="trial-stock-l">' + pair[1] + '</div>' +
+                        '</div>';
+            });
+            if (html) box.innerHTML = html;
+        })
+        .catch(function () { /* 拉唔到就留「—」，唔好報錯畀人睇 */ });
+})();
+</script>
 
 </body>
 </html>
